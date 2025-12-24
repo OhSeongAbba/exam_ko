@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>중1 국어 기초학력 진단검사</title>
+    <!-- Tailwind CSS 불러오기 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind Typography 플러그인 설정 (지문 스타일용) -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {},
+            },
+            plugins: [],
+        }
+    </script>
+    <style>
+        /* 지문 영역 스타일 */
+        .prose {
+            max-width: 65ch;
+            color: #374151;
+            line-height: 1.8;
+        }
+        .prose p {
+            margin-bottom: 1.25em;
+        }
+        /* 페이드인 애니메이션 */
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+    <!-- Lucide 아이콘 라이브러리 -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800 min-h-screen flex flex-col">
+
+    <div id="app" class="flex-grow flex flex-col">
+        <!-- 내용은 자바스크립트로 동적 렌더링 됩니다 -->
+    </div>
+
+    <script>
+        // --- 1. 데이터 정의 (React 코드와 동일) ---
+        const examData = [
+            {
+                id: 'passage-1',
+                type: 'passage',
+                content: `[1~2] 다음 시를 읽고, 물음에 답하시오.
+
+뻥튀기
+
+"뻥이요. 뻥!"
+
+㉠<u>봄날 꽃잎</u>이 흩날리는 것처럼 아름답게 보였습니다.
+아니야. 아니야. ㉡<u>나비</u>가 날아갑니다.
+아니야. 아니야, ㉢<u>함박눈</u>이 내리는 거야.
+
+맞아요. 맞아요. ㉣<u>폭죽</u>입니다.
+
+하얀 연기 고소하고요.
+
+가을날 ㉤<u>메밀꽃 냄새</u>가 납니다.
+아니야. 아니야, 새우 냄새가 납니다.
+아니야, 아니야, 멍멍이 냄새가 납니다.
+
+맞아요. 맞아요. 옥수수 냄새입니다.`,
+                questions: [
+                    {
+                        id: 1,
+                        question: "㉠ ~ ㉤ 중 비유하는 대상이 <u>다른</u> 것은?",
+                        options: ["① ㉠", "② ㉡", "③ ㉢", "④ ㉣", "⑤ ㉤"],
+                        answer: 5
+                    },
+                    {
+                        id: 2,
+                        question: "다음은 이 시에서 '뻥튀기 냄새'를 비유한 표현이다. 이 표현에 나타난 공통점으로 알맞은 것은?\n\n<b>메밀꽃 냄새, 새우 냄새, 멍멍이 냄새, 옥수수 냄새</b>",
+                        options: [
+                            "① 비리다.",
+                            "② 달콤하다.",
+                            "③ 고소하다.",
+                            "④ 짭짤하다.",
+                            "⑤ 매콤하다."
+                        ],
+                        answer: 3
+                    }
+                ]
+            },
+            {
+                id: 'passage-2',
+                type: 'passage',
+                content: `[3~5] 다음 글을 읽고, 물음에 답하시오.
+
+<b>저승에 있는 곳간</b>
+
+옛날, 전라남도 영암 땅에서 있던 일이다.
+영암 원님이 죽어서 염라대왕 앞으로 끌려갔다.
+"염라대왕님, 소인은 아직 할 일이 많습니다. 그런데 벌써 저를 데려오셨습니까? 이승에서 좀 더 살게 해 주십시오."
+㉠<u>원님은 머리를 조아리며 간청했다</u>. 그러자 염라대왕은 수명을 적어 놓은 책을 들여다보고는 아직 원님이 나이가 젊어 딱하다는 생각이 들었다.
+"좋다. 내 마음이 변하기 전에 얼른 사라져라."
+염라대왕은 원님을 저승사자에게 돌려보냈다.`,
+                questions: [
+                    {
+                        id: 3,
+                        question: "원님이 염라대왕에게 간청한 것은?",
+                        options: [
+                            "① 이승에서 좀 더 살게 해 달라.",
+                            "② 자신의 곳간에 가 보게 해 달라.",
+                            "③ 이승의 가족들이 행복하게 해 달라.",
+                            "④ 이승의 가족을 한 번만 만나게 해 달라.",
+                            "⑤ 이승의 가족들이 걱정 없이 살게 해 달라."
+                        ],
+                        answer: 1
+                    },
+                    {
+                        id: 4,
+                        question: "㉠이 원인이 되어 일어난 결과로 알맞은 것은?",
+                        options: [
+                            "① 원님이 저승사자가 되었다.",
+                            "② 염라대왕이 이승으로 내려갔다.",
+                            "③ 염라대왕이 원님에게 벌을 주었다.",
+                            "④ 염라대왕이 원님에게 상을 내렸다.",
+                            "⑤ 염라대왕이 원님을 저승사자에게 돌려보냈다."
+                        ],
+                        answer: 5
+                    },
+                    {
+                        id: 5,
+                        question: "이 글에 해당하는 단계로 알맞은 것은?",
+                        options: [
+                            "① 발단",
+                            "② 전개",
+                            "③ 위기",
+                            "④ 절정",
+                            "⑤ 결말"
+                        ],
+                        answer: 1
+                    }
+                ]
+            },
+            {
+                id: 'passage-3',
+                type: 'passage',
+                image: "https://placehold.co/600x400/png?text=Question+6-8+Image",
+                content: `[6~8] 다음 그림을 보고, 물음에 답하시오.
+
+(가)
+이 표는 과거에는 있었지만 지금은 사라진 직업의 종류를 보여 줍니다.
+기술이 발달해 사라진 직업이 많습니다.
+
+(나)
+과거에 있던 직업인 보부상을 소개하는 동영상을 보여 드리겠습니다.`,
+                questions: [
+                    {
+                        id: 6,
+                        question: "이 그림에서 학생들이 발표하는 내용으로 알맞은 것은?",
+                        options: [
+                            "① 신분제도",
+                            "② 전통 음식",
+                            "③ 과거의 직업",
+                            "④ 기술의 변화",
+                            "⑤ 전통 놀이의 종류"
+                        ],
+                        answer: 3
+                    },
+                    {
+                        id: 7,
+                        question: "이 그림에서 두 학생이 각각 활용한 자료로 알맞은 것은?",
+                        options: [
+                            "① (가) 표, (나) 사진",
+                            "② (가) 표, (나) 동영상",
+                            "③ (가) 그림, (나) 지도",
+                            "④ (가) 사진, (나) 지도",
+                            "⑤ (가) 사진, (나) 동영상"
+                        ],
+                        answer: 2
+                    },
+                    {
+                        id: 8,
+                        question: "이 그림의 두 학생처럼 자료를 활용해서 발표하면 좋은 점이 <u>아닌</u> 것은?",
+                        options: [
+                            "① 듣는 사람이 더 잘 이해할 수 있다.",
+                            "② 정보를 효과적으로 전달할 수 있다.",
+                            "③ 내용을 더 자세하게 전달할 수 있다.",
+                            "④ 듣는 사람이 더 어렵게 느낄 수 있다.",
+                            "⑤ 듣는 사람이 흥미를 느끼게 할 수 있다."
+                        ],
+                        answer: 4
+                    }
+                ]
+            },
+            {
+                id: 'passage-4',
+                type: 'passage',
+                content: `[9~10] 다음 글을 읽고, 물음에 답하시오.
+
+(가) 우리나라뿐만 아니라 세계 곳곳에서 벌어지는 자연 개발은 우리 삶을 위협한다. 이러한 무분별한 개발로 우리 삶의 터전인 자연은 몸살을 앓고, 이제 인류의 생존까지 위협하는 상황에 이르렀다. 우리는 자연의 목소리에 귀를 기울이고 자연을 보호해야 한다.
+
+(나) 이처럼 환경을 오염시키는 것은 순식간이지만 오염된 환경을 되살리는 데는 수십, 수백 배의 시간과 노력이 든다. 자연의 힘이 아무리 위대해도 자정 능력을 넘어서는 오염을 감당하기는 어렵다.
+
+(다) 둘째, 무리한 자연 개발은 생태계를 파괴한다. 생물은 서로 유기적인 생태계로 얽혀 있으며 주변 환경과 영향을 주고받으면서 살아간다. 자연 개발로 생태계를 파괴하면 결국 사람의 생활 환경을 악화시키는 결과를 초래한다.`,
+                questions: [
+                    {
+                        id: 9,
+                        question: "이 글에서 알 수 있는 문제 상황에 해당하는 것은?",
+                        options: [
+                            "① 자연을 잘 보호하고 있다.",
+                            "② 자연의 자정 능력은 위대하다.",
+                            "③ 무분별한 개발로 자연이 파괴되고 있다.",
+                            "④ 자연 속에서 동물들이 스트레스를 받는다.",
+                            "⑤ 환경 오염은 사람들에게 영향을 미치지 않는다."
+                        ],
+                        answer: 3
+                    },
+                    {
+                        id: 10,
+                        question: "글 (나)와 (다)가 뒷받침하는 주장으로 알맞은 것은?",
+                        options: [
+                            "① 자연은 신비롭다.",
+                            "② 자연은 아름답다.",
+                            "③ 자연은 위대하다.",
+                            "④ 자연을 보호해야 한다.",
+                            "⑤ 자연을 개발해야 한다."
+                        ],
+                        answer: 4
+                    }
+                ]
+            },
+            {
+                id: 'passage-5',
+                type: 'single',
+                image: "https://placehold.co/600x400/png?text=Question+11+Image",
+                content: `[11] 다음 그림에서 남자아이가 사용할 수 있는 속담으로 알맞은 것은?
+
+(상황: 일 년 동안 모은 동전이 20만 원이나 돼, 그래? 그 말이 맞네.)`,
+                questions: [
+                    {
+                        id: 11,
+                        question: "다음 그림에서 남자아이가 사용할 수 있는 속담으로 알맞은 것은?",
+                        options: [
+                            "① 티끌 모아 태산",
+                            "② 소 잃고 외양간 고친다",
+                            "③ 호랑이도 제 말 하면 온다",
+                            "④ 하룻강아지 범 무서운 줄 모른다",
+                            "⑤ 입은 비뚤어져도 말은 바로 해라"
+                        ],
+                        answer: 1
+                    }
+                ]
+            },
+            {
+                id: 'passage-6',
+                type: 'passage',
+                content: `[12~13] 다음 글을 읽고, 물음에 답하시오.
+
+  '큰 복을 누리며 번성하라'는 뜻을 가진 경복궁은 조선 시대 최초의 궁궐이면서 여러 궁궐 가운데 가장 대표적인 것이다. 경복궁은 태조 이성계가 조선을 세운 뒤에 한양, 즉 지금의 서울에 세운 조선의 법궁이다.
+
+  경복궁의 건물은 7600여 칸으로 규모가 어마어마하다. 경복궁에서 가장 웅장한 건물은 '부지런히 나라를 다스리라'는 뜻을 지닌 근정전이다. 근정전은 왕의 ㉠<u>즉위식</u>, 왕실의 혼례식, 외국 사신과의 만남과 같은 나라의 중요한 행사를 치르던 곳이다.`,
+                questions: [
+                    {
+                        id: 12,
+                        question: "이 글의 '경복궁'에 대한 설명으로 알맞지 <u>않은</u> 것은?",
+                        options: [
+                            "① 조선 시대 최초의 궁궐이다.",
+                            "② 760여 칸으로 규모가 아담하다.",
+                            "③ 태조 이성계가 세운 조선의 법궁이다.",
+                            "④ '큰 복을 누리며 번성하라'는 뜻을 가졌다.",
+                            "⑤ 경복궁에서 가장 웅장한 건물은 근정전이다."
+                        ],
+                        answer: 2
+                    },
+                    {
+                        id: 13,
+                        question: "다음은 정훈이가 ㉠의 뜻을 추론하는 과정이다. 빈칸에 들어갈 말로 알맞은 것은?\n\n정훈: '즉위식' 앞에 '왕의'라는 말이 있고, 뒤에는 '나라의 중요한 행사를 치르던 곳'이라는 말이 있어. 그럼 왕이 주인공이자 나라의 중요한 행사인 ________을/를 뜻하는 것 같아.",
+                        options: [
+                            "① 성인이 되는 나이",
+                            "② 왕위에 오르는 식",
+                            "③ 훌륭한 관리를 뽑는 방법",
+                            "④ 왕위에서 내려오는 시기",
+                            "⑤ 외국 사신을 대접하는 방식"
+                        ],
+                        answer: 2
+                    }
+                ]
+            },
+            {
+                id: 'passage-7',
+                type: 'single',
+                image: "https://placehold.co/600x400/png?text=Question+14+Image",
+                content: `[14] 다음 그림 상황
+
+(가) 우리말을 그렇게 줄여서 말하면 어떡하니?
+(나) 생선이라니? 아빠 이번 생선은 뭐예요?
+(다) 친구들이 다 그렇게 말해요, 그렇게 안 하면 핵노잼이란 말이에요.
+(라) 헐, 이것도 못 알아들으세요? 생일 선물요.`,
+                questions: [
+                    {
+                        id: 14,
+                        question: "다음 그림에서 아빠가 이해하지 <u>못한</u> 여자아이의 말은?",
+                        options: [
+                            "① 아빠, 이번",
+                            "② 생선, 핵노잼",
+                            "③ 생일, 선물",
+                            "④ 친구들, 말해요",
+                            "⑤ 그렇게, 이것도"
+                        ],
+                        answer: 2
+                    }
+                ]
+            },
+            {
+                id: 'passage-8',
+                type: 'passage',
+                content: `[15] 다음 글을 읽고 물음에 답하시오.
+
+버들이를 사랑한 죄
+
+"버들이는 강안이마을에서 늙고 병든 어머니와 둘이 살았어. 가난했지만 누구보다 예쁜 아가씨였단다. 새벽마다 도깨비 샘물을 뜨러 왔었지. 가장 먼저 샘물을 길어 마셔야 효험이 있다니까 어머니 병을 낫게 하려고 새벽마다 온 거였어. 도깨비들은 그때쯤이면 숲으로 숨기 시작하는데 나는 버들이를 보려고 늘 남아 있었지."`,
+                questions: [
+                    {
+                        id: 15,
+                        question: "다음 글에서 버들이가 추구하는 가치로 알맞은 것은?",
+                        options: [
+                            "① 끊임없이 배우려는 것",
+                            "② 부모님께 효도하는 것",
+                            "③ 스스로 행복하게 사는 것",
+                            "④ 친구를 소중하게 여기는 것",
+                            "⑤ 거짓말하지 않고 정직하게 사는 것"
+                        ],
+                        answer: 2
+                    }
+                ]
+            },
+            {
+                id: 'passage-9',
+                type: 'single',
+                image: "https://placehold.co/600x400/png?text=Question+16+Image",
+                content: `[16] 다음 대화
+
+지수: 정민아. 아까 과학 시간에 물을 엎질러서 정말 미안해.
+정민: 아니야, 지수야, 일부러 그런 것도 아니잖아.
+지수: 그래도 옷이 젖어서 불편했지?
+정민: 아니야, 괜찮았어. 그나저나 너도 많이 놀랐겠다.
+지수: 응. 사실 나도 깜짝 놀랐어.
+정민: 그래, 난 정말 괜찮으니까 너도 너무 걱정하지 마.
+지수: 그래, 고마워, 그리고 진심으로 미안해.`,
+                questions: [
+                    {
+                        id: 16,
+                        question: "다음 글을 이해한 내용으로 알맞은 것은?",
+                        options: [
+                            "① 정민은 아직 화가 나 있다.",
+                            "② 지수는 짜증 난 마음을 전하고 있다.",
+                            "③ 지수와 정민은 영상 통화를 하고 있다.",
+                            "④ 글을 읽는 사람의 표정을 바로 확인할 수 있다.",
+                            "⑤ 지수와 정민은 문자 메시지로 대화를 나누고 있다."
+                        ],
+                        answer: 5
+                    }
+                ]
+            },
+            {
+                id: 'passage-10',
+                type: 'passage',
+                content: `[17~18] 다음 시를 읽고, 물음에 답하시오.
+
+떨어져도 튀는 공처럼
+
+그래 살아 봐야지
+너도 나도 공이 되어
+떨어져도 튀는 공이 되어
+
+살아 봐야지
+쓰러지는 법이 없는 둥근
+공처럼, 탄력의 나라의
+왕자처럼
+
+가볍게 떠올라야지
+곧 움직일 준비 되어 있는 꼴
+둥근 공이 되어
+
+옳지 최선의 꼴
+지금의 네 모습처럼
+떨어져도 튀어 오르는 공
+쓰러지는 법이 없는 공이 되어.`,
+                questions: [
+                    {
+                        id: 17,
+                        question: "이 시에서 말하는 이가 살고 싶은 모습에 해당하는 대상은?",
+                        options: [
+                            "① 너",
+                            "② 나",
+                            "③ 공",
+                            "④ 탄력",
+                            "⑤ 나라"
+                        ],
+                        answer: 3
+                    },
+                    {
+                        id: 18,
+                        question: "이 시에서 말하는 이가 추구하는 삶의 모습으로 알맞은 것은?",
+                        options: [
+                            "① 공처럼 가볍게 사는 삶",
+                            "② 포기하지 않고 도전하는 삶",
+                            "③ 새로운 것을 찾아 떠나는 삶",
+                            "④ 공처럼 둥글둥글하게 사는 삶",
+                            "⑤ 어려운 일에 처하면 공처럼 도망가는 삶"
+                        ],
+                        answer: 2
+                    }
+                ]
+            },
+            {
+                id: 'passage-11',
+                type: 'single',
+                content: null,
+                questions: [
+                    {
+                        id: 19,
+                        question: "관용 표현에 해당하지 <u>않는</u> 것은?",
+                        options: [
+                            "① 귀가 얇다",
+                            "② 눈에 띄다",
+                            "③ 발이 넓다",
+                            "④ 힘이 세다",
+                            "⑤ 손이 크다"
+                        ],
+                        answer: 4
+                    }
+                ]
+            },
+            {
+                id: 'passage-12',
+                type: 'passage',
+                content: `[20~21] 다음 글을 읽고, 물음에 답하시오.
+
+  공정 무역 제품을 사용해야 하는 까닭은 다음과 같습니다. 첫째, 생산자에게 돌아갈 정당한 이익을 지켜 줍니다. 흔히 볼 수 있는 과일 가운데 하나인 바나나의 경우, 우리가 3천 원짜리 바나나 한 송이를 산다면 약 45원만이 생산자인 농민에게 이익으로 돌아갑니다. 그 까닭은 바나나 생산국에서 우리 손에 오기까지 바나나 농장 주인, 수출하는 회사, 수입하는 회사, 슈퍼마켓 등이 총수익의 98.5퍼센트를 가져가기 때문입니다. 공정 무역에서는 생산자 조합과 공정 무역 회사를 만들어 이러한 ㉠<u>중간 유통 단계를 줄이고</u> 실제로 바나나를 재배하는 생산자의 이익을 보장해 주었습니다.`,
+                questions: [
+                    {
+                        id: 20,
+                        question: "이 글에서 글쓴이가 주장하는 내용으로 알맞은 것은?",
+                        options: [
+                            "① 바나나를 자주 사 먹자.",
+                            "② 바나나를 직접 재배하자.",
+                            "③ 공정 무역 제품을 사용하자.",
+                            "④ 공정 무역에 대해 공부하자.",
+                            "⑤ 공정 무역 인증 표시를 확인하자."
+                        ],
+                        answer: 3
+                    },
+                    {
+                        id: 21,
+                        question: "㉠처럼 공정 무역에서 중간 유통 단계를 줄이는 까닭으로 알맞은 것은?",
+                        options: [
+                            "① 생산자를 홍보하기 위해서",
+                            "② 생산자의 이익을 보장하기 위해서",
+                            "③ 신선한 제품으로 유통하기 위해서",
+                            "④ 위생적으로 제품을 관리하기 위해서",
+                            "⑤ 제품을 더 신속하게 유통하기 위해서"
+                        ],
+                        answer: 2
+                    }
+                ]
+            },
+            {
+                id: 'passage-13',
+                type: 'single',
+                image: "https://placehold.co/600x400/png?text=Question+22+Image",
+                content: `[22] 다음 자료 (그래프 및 지도 데이터)
+
+주요 농작물 주산지 이동 변화
+1970~2015년 농림 어업 총조사
+사과, 복숭아, 포도, 단감, 인삼, 감귤 등
+산지가 광주, 춘천, 원주, 이천 등에서 변화함`,
+                questions: [
+                    {
+                        id: 22,
+                        question: "다음 자료를 보고 알 수 있는 내용으로 알맞은 것은?",
+                        options: [
+                            "① 주요 농작물 생산 시기",
+                            "② 주요 농작물 생산량의 변화",
+                            "③ 주요 농작물 주산지의 변화",
+                            "④ 주요 농작물 판매량의 변화",
+                            "⑤ 주요 농작물 판매 장소의 위치"
+                        ],
+                        answer: 3
+                    }
+                ]
+            },
+            {
+                id: 'passage-14',
+                type: 'passage',
+                content: `[23~24] 다음 글을 읽고, 물음에 답하시오.
+
+  나는 우리나라가 세계에서 가장 아름다운 나라가 되기를 원한다. 가장 부강한 나라가 되기를 원하는 것은 아니다. 내가 남의 침략에 가슴이 아팠으니, 내 나라가 남을 침략하는 것을 원치 아니한다. 우리의 부는 우리 생활을 풍족히 할 만하고, 우리의 힘은 남의 침략을 막을 만하면 족하다. ㉠<u>오직 한없이 가지고 싶은 것은 높은 문화의 힘이다</u>. 문화의 힘은 우리 자신을 행복하게 하고, 나아가서 남에게도 행복을 주기 때문이다.`,
+                questions: [
+                    {
+                        id: 23,
+                        question: "이 글의 글쓴이가 ㉠과 같이 말한 까닭으로 알맞은 것은?",
+                        options: [
+                            "① 남의 나라를 침략하기 위해서",
+                            "② 우리나라 사람들만 행복할 수 있어서",
+                            "③ 우리나라를 전 세계에 알릴 수 있어서",
+                            "④ 세계에서 가장 부강한 나라가 될 수 있어서",
+                            "⑤ 우리 자신을 행복하게 하고 남에게도 행복을 주므로"
+                        ],
+                        answer: 5
+                    },
+                    {
+                        id: 24,
+                        question: "이와 같은 글을 읽을 때 글쓴이의 생각을 파악하는 방법으로 알맞은 것은?",
+                        options: [
+                            "① 글의 일부분만 읽는다.",
+                            "② 글에 사용한 표현을 살펴본다.",
+                            "③ 글을 쓴 의도와 목적은 무시한다. ",
+                            "④ 뒷부분에 이어질 내용을 마음대로 상상한다.",
+                            "⑤ 글쓴이의 생각보다 내 생각을 중심으로 읽는다."
+                        ],
+                        answer: 2
+                    }
+                ]
+            },
+            {
+                id: 'passage-15',
+                type: 'passage',
+                image: "https://placehold.co/600x400/png?text=Question+25-26+Image",
+                content: `[25~26] 다음 광고를 보고, 물음에 답하시오.
+
+소비자 만족도 1위 신바람 자전거
+독보적인 내구성
+
+당신의 즐거운 일상과 건강한 체력을 책임져 줄 단 한 가지 신바람 자전거!
+독보적인 디자인과 튼튼한 내구성을 인정받아 소비자 만족도 1위 달성했습니다.
+기분 최고, 건강 최고, 기술력 최고과 신바람 자전거가 선사합니다.`,
+                questions: [
+                    {
+                        id: 25,
+                        question: "이 광고의 의도로 알맞은 것은?",
+                        options: [
+                            "① 신바람 자전거를 사라.",
+                            "② 신바람 자전거를 고쳐 주겠다.",
+                            "③ 신바람 자전거로 바꿔 주겠다.",
+                            "④ 신바람 자전거를 무료로 나눠 주겠다.",
+                            "⑤ 신바람 자전거 타는 방법을 알려 주겠다."
+                        ],
+                        answer: 1
+                    },
+                    {
+                        id: 26,
+                        question: "이 광고에서 첫 장면의 문구가 과장된 까닭으로 알맞은 것은?",
+                        options: [
+                            "① 자전거가 튼튼하지 않아서",
+                            "② 자전거를 타는 것은 위험해서",
+                            "③ 자전거를 타는 것은 어려워서",
+                            "④ 자전거 디자인이 독보적이지 않아서",
+                            "⑤ 자전거를 타는 것이 즐거운 일상과 건강한 체력을 책임져 줄 '단 한 가지' 방법은 아니어서"
+                        ],
+                        answer: 5
+                    }
+                ]
+            },
+            {
+                id: 'passage-16',
+                type: 'single',
+                content: null,
+                questions: [
+                    {
+                        id: 27,
+                        question: "다음 밑줄 친 부분을 바르게 고쳐 쓴 것은?\n\n\<b>요즘 많은 어린이가 이야기할 때 은어나 비속어를 <u>사용했다</u>.</b>",
+                        options: [
+                            "① 사용하다.",
+                            "② 사용한다.",
+                            "③ 사용해 왔다.",
+                            "④ 사용할 것이다.",
+                            "⑤ 사용했을 것이다."
+                        ],
+                        answer: 2
+                    }
+                ]
+            },
+            {
+                id: 'passage-17',
+                type: 'passage',
+                content: `[28] 다음 ㉠ ~ ㉤에서 필요 없는 문장에 해당하는 것은?
+
+  ㉠<u>고운 말을 사용하면 서로 존중하는 마음을 전할 수 있다.</u> ㉡<u>흔히 말이 눈에 보이지 않는 마음임을 표현할 때 "말은 마음의 거울"이라는 격언을 사용한다.</u> ㉢<u>고운 말을 사용해야 하는 것은 어린이만이 아니다.</u> ㉣<u>존중하는 마음이 없다면 고운 말도 나오지 않는다.</u> ㉤<u>지금부터라도 고운 말을 사용하자.</u>`,
+                questions: [
+                    {
+                        id: 28,
+                        question: "다음 글에서 필요 <u>없는</u> 문장에 해당하는 것은?",
+                        options: [
+                            "① ㉠",
+                            "② ㉡",
+                            "③ ㉢",
+                            "④ ㉣",
+                            "⑤ ㉤"
+                        ],
+                        answer: 3
+                    }
+                ]
+            },
+            {
+                id: 'passage-18',
+                type: 'passage',
+                content: `[29~30] 다음 글을 읽고, 물음에 답하시오.
+
+대상주 홍라
+
+  모든 준비를 마친 뒤, 홍라는 방으로 들어왔다. 탁자 앞에 앉아 옥상자를 열었다. 어머니가 남겨 준 열쇠, 그리고 아버지의 선물인 소동인이 있었다.
+
+  홍라는 소동인과 열쇠 두 개를 가죽끈에 꿰어 목에 걸었다. 이제 먼 길을 가는 내내 어머니, 아버지가 함께해 줄 것이다.
+  드디어 떠난다. 홍라의 가슴이 세차게 고동쳤다. 대상주가 되어 교역을 떠난다. 빚을 갚고 상단을 구할 것이다. 걱정거리가 없지 않지만, 다 이겨 낼 수 있을 것만 같았다. 이겨 내야만 했다.
+
+  홍라가 어머니를 따라 먼 교역길에 나서 본 게 세 번이었다. 신라, 일본, 그리고 당나라의 장안이었다.
+
+  서라벌에 갔던 건 너무 어려서라 기억에 남아 있는 게 없었다. 다만 그때 어머니가 사준 신라 모전이 아직도 홍라 침상에 깔려 있었다. 그리고 이번에 일본에 다녀왔고, 이 년 전에는 장안에 간 적이 있었다.`,
+                questions: [
+                    {
+                        id: 29,
+                        question: "이 글에 나타난 홍라의 계획으로 알맞은 것은?",
+                        options: [
+                            "① 해적이 되는 것",
+                            "② 부모님을 만나는 것",
+                            "③ 세계 여행을 떠나는 것",
+                            "④ 대상주가 되어 교역을 떠나는 것",
+                            "⑤ 어릴 적 갔던 서라벌에 다시 가는 것"
+                        ],
+                        answer: 4
+                    },
+                    {
+                        id: 30,
+                        question: "이 글에서 알 수 있는 홍라의 기분으로 알맞은 것은?",
+                        options: [
+                            "① 긴장",
+                            "② 분노",
+                            "③ 슬픔",
+                            "④ 지루함",
+                            "⑤ 미안함"
+                        ],
+                        answer: 1
+                    }
+                ]
+            }
+        ];
+
+        // --- 2. 상태 관리 ---
+        let started = false;
+        let allQuestions = [];
+        let currentQuestionIndex = 0;
+        let answers = {};
+        let showResult = false;
+
+        // --- 3. 초기화 (데이터 평탄화) ---
+        function init() {
+            allQuestions = examData.flatMap(passageData => 
+                passageData.questions.map(q => ({
+                    ...q,
+                    passageContent: passageData.content,
+                    passageType: passageData.type,
+                    passageImage: passageData.image
+                }))
+            );
+            render();
+        }
+
+        // --- 4. 렌더링 로직 ---
+        function render() {
+            const app = document.getElementById('app');
+            app.innerHTML = ''; // 초기화
+
+            if (!started) {
+                renderIntro(app);
+            } else if (showResult) {
+                renderResult(app);
+            } else {
+                renderExam(app);
+            }
+            
+            // 아이콘 렌더링 (Lucide)
+            lucide.createIcons();
+        }
+
+        function renderIntro(container) {
+            container.innerHTML = `
+                <div class="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4 font-sans fade-in">
+                    <div class="bg-white p-8 md:p-12 rounded-2xl shadow-xl max-w-lg w-full text-center space-y-8">
+                        <div class="bg-blue-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-4 ring-8 ring-blue-50/50">
+                            <i data-lucide="file-text" class="w-12 h-12 text-blue-600"></i>
+                        </div>
+                        <div>
+                            <span class="text-blue-600 font-bold tracking-wide uppercase text-sm">제1회 온라인 모의고사</span>
+                            <h1 class="text-3xl font-extrabold text-gray-900 mt-2 mb-1">
+                                중학교 1학년<br/>기초학력 진단검사
+                            </h1>
+                            <p class="text-xl text-gray-500 font-medium">국어 영역</p>
+                        </div>
+                        <div class="text-left bg-gray-50 p-6 rounded-xl border border-gray-100 text-sm text-gray-600 space-y-3">
+                            <p class="flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                                총 <span class="font-bold text-gray-900">${allQuestions.length}문항</span>으로 구성되어 있습니다.
+                            </p>
+                            <p class="flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                                지문을 꼼꼼히 읽고 답안을 선택해 주세요.
+                            </p>
+                            <p class="flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                                검사 완료 후 즉시 점수를 확인할 수 있습니다.
+                            </p>
+                        </div>
+                        <button onclick="startExam()" class="w-full group bg-blue-600 hover:bg-blue-700 text-white text-lg font-bold py-4 px-6 rounded-xl shadow-lg shadow-blue-600/20 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-3">
+                            검사 시작하기
+                            <i data-lucide="chevron-right" class="w-6 h-6 group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                    </div>
+                    <p class="mt-8 text-gray-400 text-sm">© 2024 Online Assessment System</p>
+                </div>
+            `;
+        }
+
+        function renderExam(container) {
+            const currentQ = allQuestions[currentQuestionIndex];
+            const progress = ((currentQuestionIndex + 1) / allQuestions.length) * 100;
+
+            // 지문 영역 HTML
+            let passageHTML = '';
+            if (currentQ.passageContent || currentQ.passageImage) {
+                passageHTML = `
+                    <div class="mb-4 pb-2 border-b border-gray-200 flex items-center justify-between sticky top-0 bg-white pt-2 z-10">
+                        <span class="text-sm font-bold text-gray-500 uppercase tracking-wider flex items-center gap-1">
+                            <i data-lucide="file-text" size="16"></i> 관련 지문
+                        </span>
+                    </div>
+                `;
+                if (currentQ.passageImage) {
+                    passageHTML += `
+                        <div class="mb-6 rounded-lg overflow-hidden border border-gray-200">
+                            <img src="${currentQ.passageImage}" alt="참고 자료" class="w-full h-auto object-contain bg-gray-50" />
+                        </div>
+                    `;
+                }
+                if (currentQ.passageContent) {
+                    passageHTML += `
+                        <div class="prose prose-lg max-w-none text-gray-700 leading-loose whitespace-pre-wrap font-serif">${currentQ.passageContent}</div>
+                    `;
+                }
+            } else {
+                passageHTML = `
+                    <div class="flex flex-col items-center justify-center h-64 text-gray-400">
+                        <i data-lucide="file-text" class="w-16 h-16 mb-4 opacity-20"></i>
+                        <p class="text-lg font-medium text-gray-500">이 문제는 지문이 없습니다.</p>
+                        <p class="text-sm">오른쪽의 문제를 풀고 다음으로 넘어가세요.</p>
+                    </div>
+                `;
+            }
+
+            // 문제 옵션 HTML
+            let optionsHTML = currentQ.options.map((option, idx) => {
+                const isSelected = answers[currentQ.id] === idx + 1;
+                const activeClass = isSelected ? 'bg-blue-50 border-blue-500 shadow-sm' : 'border-gray-100 hover:bg-gray-50 hover:border-gray-300';
+                const textClass = isSelected ? 'text-blue-900 font-medium' : 'text-gray-700';
+                
+                return `
+                    <label class="flex items-start p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 group ${activeClass}" onclick="handleOptionSelect(${currentQ.id}, ${idx})">
+                        <div class="relative flex items-center pt-0.5">
+                            <input type="radio" name="question-${currentQ.id}" class="peer h-5 w-5 text-blue-600 border-gray-300 focus:ring-blue-500" ${isSelected ? 'checked' : ''}>
+                        </div>
+                        <div class="ml-3 text-base leading-relaxed transition-colors ${textClass}">
+                            ${option}
+                        </div>
+                    </label>
+                `;
+            }).join('');
+
+            // 버튼 HTML
+            const prevBtnClass = currentQuestionIndex === 0 ? 'text-gray-300 cursor-not-allowed bg-transparent' : 'bg-white text-gray-700 hover:bg-gray-100 shadow-sm border border-gray-200';
+            const nextBtnClass = currentQuestionIndex === allQuestions.length - 1 ? 'bg-green-600 hover:bg-green-700 text-white shadow-green-200' : 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-200';
+            const nextBtnText = currentQuestionIndex === allQuestions.length - 1 ? '제출하기' : '다음';
+            
+            container.innerHTML = `
+                <div class="min-h-screen bg-gray-100 flex flex-col font-sans fade-in">
+                    <!-- Header -->
+                    <header class="bg-white shadow-sm sticky top-0 z-20">
+                        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+                            <h1 class="text-lg md:text-xl font-bold text-gray-800 flex items-center gap-2">
+                                <i data-lucide="file-text" class="text-blue-600 hidden md:block"></i>
+                                중1 국어 기초학력 진단검사
+                            </h1>
+                            <div class="flex items-center gap-4">
+                                <div class="text-sm text-gray-500 font-medium hidden sm:block">진행률</div>
+                                <div class="flex items-center gap-2 bg-gray-100 px-3 py-1 rounded-full">
+                                    <span class="font-bold text-blue-600">${currentQuestionIndex + 1}</span>
+                                    <span class="text-gray-400">/</span>
+                                    <span class="text-gray-600">${allQuestions.length}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="h-1 bg-gray-200 w-full">
+                            <div class="h-full bg-blue-600 transition-all duration-300 ease-out" style="width: ${progress}%"></div>
+                        </div>
+                    </header>
+
+                    <main class="flex-grow max-w-6xl mx-auto w-full p-4 md:p-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Left: Passage -->
+                        <div class="bg-white rounded-xl shadow-md p-6 h-fit lg:sticky lg:top-24 overflow-y-auto max-h-[50vh] lg:max-h-[calc(100vh-8rem)] ${!currentQ.passageContent && !currentQ.passageImage ? 'hidden lg:flex items-center justify-center bg-gray-50 border border-gray-200 border-dashed' : ''}">
+                            ${passageHTML}
+                        </div>
+
+                        <!-- Right: Question -->
+                        <div class="flex flex-col h-full space-y-6">
+                            <div class="bg-white rounded-xl shadow-md p-6 border-2 border-blue-50 relative flex-grow">
+                                <div class="flex items-start gap-2 mb-6">
+                                    <span class="flex-shrink-0 bg-blue-600 text-white font-bold rounded-lg w-10 h-10 flex items-center justify-center text-lg shadow-sm">
+                                        ${currentQ.id}
+                                    </span>
+                                    <h3 class="text-xl font-medium text-gray-800 leading-snug pt-1 whitespace-pre-wrap">${currentQ.question}</h3>
+                                </div>
+                                <div class="space-y-3 pl-1">
+                                    ${optionsHTML}
+                                </div>
+                            </div>
+
+                            <div class="flex justify-between items-center pt-2">
+                                <button onclick="handlePrev()" ${currentQuestionIndex === 0 ? 'disabled' : ''} class="flex items-center gap-1 px-5 py-3 rounded-xl font-medium transition text-lg ${prevBtnClass}">
+                                    <i data-lucide="chevron-left" size="24"></i> 이전
+                                </button>
+                                <button onclick="handleNext()" class="flex items-center gap-2 px-8 py-3 rounded-xl font-bold shadow-md transition transform active:scale-95 text-lg ${nextBtnClass}">
+                                    ${nextBtnText}
+                                    ${currentQuestionIndex !== allQuestions.length - 1 ? '<i data-lucide="chevron-right" size="24"></i>' : ''}
+                                </button>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            `;
+        }
+
+        function renderResult(container) {
+            let score = 0;
+            allQuestions.forEach(q => {
+                if (answers[q.id] === q.answer) score += 1;
+            });
+            const finalScore = Math.round((score / allQuestions.length) * 100);
+
+            const resultListHTML = allQuestions.map(q => {
+                const isCorrect = answers[q.id] === q.answer;
+                const myAnswer = answers[q.id] ? "①②③④⑤"[answers[q.id]-1] : '-';
+                const correctAnswer = q.answer ? "①②③④⑤"[q.answer-1] : '확인 필요';
+                
+                return `
+                    <div class="mb-4 p-4 border rounded-lg hover:bg-gray-50 transition-colors">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-semibold text-gray-700">문제 ${q.id}</span>
+                            <span class="font-bold px-2 py-0.5 rounded text-sm ${isCorrect ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
+                                ${isCorrect ? '정답' : '오답'}
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3 font-medium whitespace-pre-wrap">${q.question}</p>
+                        <div class="text-sm flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 bg-gray-50 p-3 rounded">
+                            <span class="text-gray-600">내 답: <span class="font-bold text-gray-900">${myAnswer}</span></span>
+                            ${!isCorrect ? `<span class="text-green-600 font-semibold">정답: ${correctAnswer}</span>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = `
+                <div class="min-h-screen bg-gray-50 p-6 flex flex-col items-center justify-center font-sans fade-in">
+                    <div class="bg-white p-8 rounded-xl shadow-lg max-w-2xl w-full text-center">
+                        <i data-lucide="check-circle" class="w-16 h-16 text-green-500 mx-auto mb-4"></i>
+                        <h1 class="text-3xl font-bold text-gray-800 mb-2">검사 완료</h1>
+                        <p class="text-gray-600 mb-6">모든 문제를 풀었습니다.</p>
+                        
+                        <div class="bg-blue-50 p-6 rounded-lg mb-8">
+                            <span class="text-lg text-blue-800 font-semibold block mb-2">당신의 점수는</span>
+                            <span class="text-5xl font-bold text-blue-600">${finalScore}점</span>
+                            <span class="text-blue-800 ml-2">/ 100점</span>
+                        </div>
+
+                        <div class="text-left mb-8 max-h-96 overflow-y-auto border-t pt-4 scrollbar-thin scrollbar-thumb-gray-200">
+                            <h3 class="font-bold text-lg mb-4">상세 결과</h3>
+                            ${resultListHTML}
+                        </div>
+
+                        <button onclick="resetExam()" class="flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200">
+                            <i data-lucide="rotate-ccw" size="20"></i> 처음으로 돌아가기
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- 5. 이벤트 핸들러 ---
+        function startExam() {
+            started = true;
+            render();
+            window.scrollTo(0, 0);
+        }
+
+        function handleOptionSelect(qId, idx) {
+            answers[qId] = idx + 1;
+            render(); // 상태 변경 후 다시 렌더링
+        }
+
+        function handleNext() {
+            if (currentQuestionIndex < allQuestions.length - 1) {
+                currentQuestionIndex++;
+                render();
+                window.scrollTo(0, 0);
+            } else {
+                showResult = true;
+                render();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function handlePrev() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                render();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function resetExam() {
+            started = false;
+            answers = {};
+            currentQuestionIndex = 0;
+            showResult = false;
+            render();
+            window.scrollTo(0, 0);
+        }
+
+        // --- 실행 ---
+        init();
+    </script>
+</body>
+</html>
